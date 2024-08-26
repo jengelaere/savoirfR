@@ -2,7 +2,7 @@
 # title: "Exercice 3 -  module 5"
 # --- 
 # En réutilisant le graphe obtenu à l’exercice 1 (rpls_aggrege_large.RData), y rajouter :
-#  - une palette brewer pour la couleur ;
+#  - une palette gouvdown pour la couleur ;
 #  - la légende en bas ;
 #  - des libellés (axes et légende) parlant et un titre.
 load("extdata/rpls_aggrege_large.RData")
@@ -19,7 +19,7 @@ ggplot(data = rpls_aggrege_large %>%
              size = .7
   ) +
   scale_color_brewer(type = "qual", palette = "Paired",
-                     labels = c("Autres Epci/Epci de la région Pays de la Loire")) +
+                     labels = c("Autres Epci", "Epci de la région Pays de la Loire")) +
   scale_x_continuous(limits = c(0, 40)) +
   scale_y_continuous(limits = c(0, 80)) +
   theme(legend.position = "bottom") +

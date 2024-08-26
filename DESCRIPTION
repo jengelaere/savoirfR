@@ -1,6 +1,6 @@
 Package: savoirfR
 Title: Exercices for mtes-mctrct r course modules
-Version: 0.0.0.9008
+Version: 0.0.0.9009
 Authors@R: c(
     person(given = "Murielle",
            family = "Lethrosne",
@@ -50,6 +50,7 @@ Suggests:
     forcats,
     gganimate,
     ggiraph,
+    gifski,
     ggplot2,
     gouvdown,
     gouvdown.fonts,

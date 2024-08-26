@@ -3,15 +3,13 @@
 # ---  
 # A partir du fichier `rpls_aggrege_large.RData`, réaliser un graphique en barre représentant la répartition des DPE par classe (en %).
 # Le graphique sera animé par département, uniquement pour ceux de la région Centre-Val de Loire.
+
 load("extdata/rpls_aggrege_large.RData")
 
 
-
-library(dplyr)
-library(ggplot2)
+library(tidyverse)
 library(gganimate)
-library(tidyr)
-library(stringr)
+library(gifski)
 
 # PREPARATION DE LA TABLE
 rpls <- rpls_aggrege_large %>%
@@ -33,7 +31,7 @@ rpls <- rpls_aggrege_large %>%
 ggplot(data = rpls, aes(x = variable, y = valeur, fill = variable)) +
   geom_col() +
   # definition des couleurs
-  scale_fill_manual(values = c("#66CD00/#FFFF00/#FF7F00/#A8A8A8")) +
+  scale_fill_manual(values = c("#66CD00", "#FFFF00", "#FF7F00", "#A8A8A8")) +
   # suppression de la legende
   theme(legend.position = "none") +
   # habillage: titre, libellé des axes, Source

@@ -13,7 +13,7 @@ name: pkgdown
 
 jobs:
   pkgdown:
-    runs-on: macOS-latest
+    runs-on: ubuntu-latest
     # Only restrict concurrency for non-PR jobs
     concurrency:
       group: pkgdown-${{ github.event_name != 'pull_request' || github.run_id }}
@@ -28,6 +28,12 @@ jobs:
         with:
           use-public-rspm: true
 
+      - name: Install av on Linux
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update -y && sudo apt-get install -y libavfilter-dev libudunits2-dev libgdal-dev libgeos-dev libproj-dev
+          sudo snap install gifski
+
       - name: Install dependencies
         run: |
           install.packages("remotes")
@@ -39,13 +45,20 @@ jobs:
         run: R CMD INSTALL .
         
       - name: Build site
-        run: pkgdown::build_site_github_pages(new_process = FALSE, install = FALSE)
+        run: |
+          pkgdown::build_site_github_pages(new_process = FALSE, install = FALSE)
+          cat("correction du bug d'affichage dans avec gganimate, cf https://github.com/r-lib/pkgdown/issues/2334")
+          vignette_m5 <- readLines("docs/articles/m05_exercices_module_datavisualisation_R.html")
+          vignette_m5_cor <- gsub("../docs/", "../", vignette_m5)
+          writeLines(vignette_m5_cor, "docs/articles/m05_exercices_module_datavisualisation_R.html")
+          cat("Mise du rmd du chap 5 dans l'artifact pour comprendre pourquoi le resultat attendu est NULL")
+          file.copy("vignettes/m05_exercices_module_datavisualisation_R.Rmd", to = "docs/articles/vign_M5.Rmd")
         shell: Rscript {0}
 
       - name: Deploy to GitHub pages 🚀
         if: github.event_name != 'pull_request'
         uses: JamesIves/github-pages-deploy-action@v4.4.1
         with:
-          clean: false
+          clean: true
           branch: gh-pages
           folder: docs
